@@ -49,6 +49,7 @@ model Enrollment {
   userId    Int       @unique
   User      User      @relation(fields: [userId], references: [id])
   Address   Address[]
+  Ticket    Ticket[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
@@ -64,6 +65,41 @@ model Address {
   addressDetail String?    @db.VarChar(255)
   enrollmentId  Int        @unique
   Enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model TicketType {
+    id            Int        @id @default(autoincrement())
+    name          String     @db.VarChar(255)
+    price         Int
+    isRemote      Boolean
+    includesHotel Boolean
+    ticket        Ticket[]
+    createdAt     DateTime   @default(now())
+    updatedAt     DateTime   @updatedAt
+}
+
+model Ticket {
+  id            Int        @id @default(autoincrement())
+  ticketTypeId  Int        
+  TicketType    TicketType @relation(fields: [ticketTypeId], references: [id])
+  enrollmentId  Int        @unique 
+  enrollment    Enrollment @relation(fields: [enrollmentId], references: [id])
+  status        String
+  payment       Payment[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Payment {
+  id            Int        @id @default(autoincrement())
+  ticketId      Int
+  ticket        Ticket     @relation(fields: [ticketId], references: [id])
+  value         Int
+  cardIssuer    String
+  cardLastDigits Int
+  
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
 }
