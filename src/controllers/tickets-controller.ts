@@ -12,3 +12,10 @@ export async function getTickets(req: AuthenticatedRequest, res: Response) {
   const response = await ticketService.getTickets(id);
   res.send(response);
 }
+
+export async function postTicket(req: AuthenticatedRequest, res: Response) {
+  const userId = req.userId;
+  const { ticketTypeId } = req.body;
+  const response = await ticketService.post(userId, ticketTypeId);
+  res.send(response);
+}

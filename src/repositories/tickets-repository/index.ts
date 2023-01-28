@@ -1,4 +1,5 @@
 import { prisma } from "@/config";
+import { Ticket } from "@/protocols";
 import { PrismaPromise } from "@prisma/client";
 import { TicketType } from "@prisma/client";
 
@@ -8,16 +9,43 @@ function selectTypes(): PrismaPromise<TicketType[]> {
 
 function selectTickets(id: number) {
   return prisma.ticket.findMany({
-    where: { id },
+    where: { 
+      enrollmentId: id,
+    },
     include: {
       TicketType: true
     }
   });
 }
 
+function findEnrollmentByUserId(id: number) {
+  return prisma.enrollment.findFirst({
+    where: {
+      userId: id
+    }
+  });
+}
+
+function findTypeById(id: number) {
+  return prisma.ticketType.findFirst({
+    where: {
+      id,
+    }
+  });
+}
+
+function createTicket(body: Ticket) {
+  return prisma.ticket.create({
+    data: body
+  });
+}
+
 const ticketsRepository = {
   selectTypes,
-  selectTickets
+  selectTickets,
+  findEnrollmentByUserId,
+  findTypeById,
+  createTicket
 };
 
 export default ticketsRepository;

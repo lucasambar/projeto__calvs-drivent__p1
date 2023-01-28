@@ -18,3 +18,9 @@ export type RequestError = {
   name: string,
   message: string,
 };
+
+export type Ticket = {
+  status: string,
+  ticketTypeId: number,
+  enrollmentId: number
+}
