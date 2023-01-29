@@ -1,5 +1,5 @@
 import paymentServices from "@/services/payment-services";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { AuthenticatedRequest } from "@/middlewares";
 
 export async function postPayment(req: AuthenticatedRequest, res: Response) {
@@ -7,4 +7,11 @@ export async function postPayment(req: AuthenticatedRequest, res: Response) {
   const userId = req.userId;
   const reponse = await paymentServices.post(body, userId);
   res.send(reponse);
+}
+
+export async function getPayment(req: AuthenticatedRequest, res: Response) {
+  const ticketId = Number(req.query.ticketId);
+  const userId = req.userId;
+  const response = await paymentServices.get(ticketId, userId);
+  res.send(response);
 }

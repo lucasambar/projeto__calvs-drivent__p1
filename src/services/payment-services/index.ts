@@ -1,7 +1,16 @@
 import { CreditCard, Payment } from "@/protocols";
 import paymentRepository from "@/repositories/payment-repository";
 import { wrongData, notFound, unauthorized } from "./error";
-// async function get() {}
+
+async function get(ticketId: number, userId: number) {
+  if (!ticketId) throw wrongData("There is no ticket id to search.");
+
+  const ticket = await paymentRepository.selectTicketById(ticketId);
+  if (!ticket) throw notFound("ticket not found in database");
+  if (ticket.enrollment.userId !== userId) throw unauthorized();
+
+  return await paymentRepository.selectPayment(ticketId);
+}
 
 function validateCreditCard(card: CreditCard) {
   const { issuer, name, number, expirationDate, cvv } = card;
@@ -47,7 +56,7 @@ async function post(body: Payment, userId: number) {
 }
 
 const paymentServices = {
-//   get,
+  get,
   post
 };
 
