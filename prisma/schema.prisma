@@ -98,7 +98,7 @@ model Payment {
   ticket        Ticket     @relation(fields: [ticketId], references: [id])
   value         Int
   cardIssuer    String
-  cardLastDigits Int
+  cardLastDigits String
   
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt

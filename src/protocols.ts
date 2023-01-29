@@ -24,3 +24,23 @@ export type Ticket = {
   ticketTypeId: number,
   enrollmentId: number
 }
+
+export type Payment = {
+  ticketId: number,
+  cardData: CreditCard
+}
+
+export type CreditCard = {
+  issuer: string,
+  number: number,
+  name: string,
+  expirationDate: string,
+  cvv: number
+}
+
+export type PaymentDB = {
+  ticketId: number,
+  value: number,
+  cardIssuer: string,
+  cardLastDigits: string
+}
